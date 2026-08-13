@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Multi-Step Form</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-100 min-h-screen flex items-center justify-center p-4">
+  <div class="bg-white rounded-3xl shadow-xl w-full max-w-lg overflow-hidden">
+    <!-- Progress -->
+    <div class="flex">
+      <div id="p1" class="h-1.5 flex-1 bg-indigo-600 transition"></div>
+      <div id="p2" class="h-1.5 flex-1 bg-slate-200 transition"></div>
+      <div id="p3" class="h-1.5 flex-1 bg-slate-200 transition"></div>
+    </div>
+
+    <div class="p-8">
+      <!-- Step 1 -->
+      <div id="step1">
+        <h2 class="text-2xl font-bold mb-1">Personal Info</h2>
+        <p class="text-slate-500 text-sm mb-6">Step 1 of 3</p>
+        <input id="name" type="text" placeholder="Full Name" class="w-full border rounded-xl px-4 py-3 mb-4 outline-none focus:border-indigo-500">
+        <input id="email" type="email" placeholder="Email Address" class="w-full border rounded-xl px-4 py-3 mb-6 outline-none focus:border-indigo-500">
+        <button onclick="next(2)" class="w-full bg-indigo-600 text-white py-3 rounded-xl font-semibold hover:bg-indigo-700">Continue</button>
+      </div>
+
+      <!-- Step 2 -->
+      <div id="step2" class="hidden">
+        <h2 class="text-2xl font-bold mb-1">Address</h2>
+        <p class="text-slate-500 text-sm mb-6">Step 2 of 3</p>
+        <input id="address" type="text" placeholder="Street Address" class="w-full border rounded-xl px-4 py-3 mb-4 outline-none focus:border-indigo-500">
+        <div class="grid grid-cols-2 gap-4 mb-6">
+          <input id="city" type="text" placeholder="City" class="border rounded-xl px-4 py-3 outline-none focus:border-indigo-500">
+          <input id="zip" type="text" placeholder="ZIP Code" class="border rounded-xl px-4 py-3 outline-none focus:border-indigo-500">
+        </div>
+        <div class="flex gap-3">
+          <button onclick="next(1)" class="flex-1 border py-3 rounded-xl font-semibold hover:bg-slate-50">Back</button>
+          <button onclick="next(3)" class="flex-1 bg-indigo-600 text-white py-3 rounded-xl font-semibold hover:bg-indigo-700">Continue</button>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div id="step3" class="hidden">
+        <h2 class="text-2xl font-bold mb-1">Confirm</h2>
+        <p class="text-slate-500 text-sm mb-6">Step 3 of 3</p>
+        <div class="bg-slate-50 rounded-2xl p-5 mb-6 text-sm space-y-2">
+          <p><span class="text-slate-500">Name:</span> <span id="c-name" class="font-medium"></span></p>
+          <p><span class="text-slate-500">Email:</span> <span id="c-email" class="font-medium"></span></p>
+          <p><span class="text-slate-500">Address:</span> <span id="c-address" class="font-medium"></span></p>
+          <p><span class="text-slate-500">City:</span> <span id="c-city" class="font-medium"></span></p>
+        </div>
+        <div class="flex gap-3">
+          <button onclick="next(2)" class="flex-1 border py-3 rounded-xl font-semibold hover:bg-slate-50">Back</button>
+          <button onclick="submitForm()" class="flex-1 bg-emerald-600 text-white py-3 rounded-xl font-semibold hover:bg-emerald-700">Submit</button>
+        </div>
+      </div>
+
+      <!-- Success -->
+      <div id="success" class="hidden text-center py-8">
+        <div class="text-5xl mb-4">✓</div>
+        <h2 class="text-2xl font-bold mb-2">Submitted Successfully!</h2>
+        <p class="text-slate-500">Thank you for completing the form.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function next(step) {
+      document.getElementById('step1').classList.add('hidden');
+      document.getElementById('step2').classList.add('hidden');
+      document.getElementById('step3').classList.add('hidden');
+      document.getElementById('step' + step).classList.remove('hidden');
+
+      document.getElementById('p1').className = 'h-1.5 flex-1 transition ' + (step >= 1 ? 'bg-indigo-600' : 'bg-slate-200');
+      document.getElementById('p2').className = 'h-1.5 flex-1 transition ' + (step >= 2 ? 'bg-indigo-600' : 'bg-slate-200');
+      document.getElementById('p3').className = 'h-1.5 flex-1 transition ' + (step >= 3 ? 'bg-indigo-600' : 'bg-slate-200');
+
+      if (step === 3) {
+        document.getElementById('c-name').innerText = document.getElementById('name').value || '—';
+        document.getElementById('c-email').innerText = document.getElementById('email').value || '—';
+        document.getElementById('c-address').innerText = document.getElementById('address').value || '—';
+        document.getElementById('c-city').innerText = (document.getElementById('city').value || '—') + ' ' + (document.getElementById('zip').value || '');
+      }
+    }
+
+    function submitForm() {
+      document.getElementById('step3').classList.add('hidden');
+      document.getElementById('success').classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
